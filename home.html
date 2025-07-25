@@ -11,11 +11,9 @@
     a { text-decoration:none; color:inherit; }
     ul { list-style:none; }
 
-    /* CONTAINER & SECTIONS */
     .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
     section { padding:4rem 0; }
 
-    /* NAVBAR */
     header {
       background:#a2d2ff; position:sticky; top:0; z-index:10;
       box-shadow:0 2px 8px rgba(0,0,0,0.1);
@@ -29,7 +27,14 @@
       background:#ff758f; border-radius:2px;
     }
 
-    /* HERO */
+    .add-link-banner {
+      text-align:center;
+      padding:0.75rem;
+      background:#ffdac1;
+      font-weight:bold;
+      color:#6d6875;
+    }
+
     #hero { background:linear-gradient(135deg,#ffb5a7,#caf0f8); text-align:center; color:#6d6875; }
     #hero h1 { font-size:2.8rem; margin-bottom:1rem; line-height:1.2; }
     #hero p { font-size:1.2rem; margin-bottom:2rem; max-width:600px; margin:0 auto; opacity:0.9; }
@@ -40,7 +45,6 @@
     }
     #hero .btn:hover { background:#f28482; }
 
-    /* MOMENTS */
     #moments { background:#fcd5ce; }
     #moments h2 { text-align:center; font-size:2rem; color:#6d6875; margin-bottom:2rem; }
     .moments-grid {
@@ -53,7 +57,6 @@
     .moment-card img { width:100%; display:block; }
     .moment-card h3 { padding:0.5rem; font-size:1rem; color:#6d6875; }
 
-    /* QUOTES */
     #quotes { background:#a2d2ff; color:#6d6875; }
     #quotes h2 { text-align:center; font-size:2rem; margin-bottom:2rem; }
     .quotes-list {
@@ -71,14 +74,12 @@
       font-style:normal; opacity:0.7;
     }
 
-    /* ABOUT */
     #about { background:#ffb5a7; color:#fff; }
     #about h2 { text-align:center; font-size:2rem; margin-bottom:1rem; }
     #about p {
       max-width:700px; margin:0 auto; font-size:1.1rem; line-height:1.6;
     }
 
-    /* FOOTER */
     footer {
       text-align:center; padding:1.5rem 0; background:#6d6875;
       color:#fff; font-size:0.9rem;
@@ -104,6 +105,9 @@
           <li><a href="#about">About</a></li>
         </ul>
       </nav>
+    </div>
+    <div class="add-link-banner">
+      <a href="add.html">Add your memories, vibes and quotes here</a>
     </div>
   </header>
 
@@ -146,19 +150,21 @@
     </div>
   </section>
 
+  <!-- ADD LINK AT BOTTOM -->
+  <section class="add-link-banner">
+    <a href="add.html">Add your memories, vibes and quotes here</a>
+  </section>
+
   <!-- FOOTER -->
   <footer>&copy; 2025 Tiny Joys by Idea-Hatch. All rights reserved.</footer>
 
   <!-- Supabase UMD & Vanilla JS -->
-  <!-- 1) UMD build gives global `supabase` -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
   <script>
-    // 2) Initialize with your project URL & anon key
     const SUPABASE_URL = 'https://rwawxbrigddbuppvykbq.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YXd4YnJpZ2RkYnVwcHZ5a2JxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0MjE5MDAsImV4cCI6MjA2ODk5NzkwMH0.ir2cz7VhZjkE2L71CUoukYsXpjB8X1_c02_5kO2ob-w';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 3) Load and render moments
     async function loadMoments() {
       const { data, error } = await supabase
         .from('moments')
@@ -173,7 +179,6 @@
       `).join('');
     }
 
-    // 4) Load and render quotes
     async function loadQuotes() {
       const { data, error } = await supabase
         .from('quotes')
@@ -185,7 +190,6 @@
       `).join('');
     }
 
-    // 5) Kick off on DOM ready
     document.addEventListener('DOMContentLoaded', () => {
       loadMoments();
       loadQuotes();

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Memories, Vibes & Quotes</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fdf0f0;
+      color: #333;
+      padding: 2rem;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #6d6875;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    a.back-link {
+      display: block;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: bold;
+      color: #6d6875;
+    }
+    form {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 1rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #ffb5a7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button + button {
+      margin-top: 0.5rem;
+    }
+    .hidden {
+      display: none;
+    }
+    .preview {
+      background: #fcd5ce;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      text-align: center;
+    }
+    .preview button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #ffb5a7;
+      color: #fff;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <a href="home.html" class="back-link">&larr; Back to Home</a>
+
+  <div class="container">
+    <h1>Add Your Memories, Vibes & Quotes</h1>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm">
+      <h2>Login</h2>
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="e.g. John Doe" required />
+
+      <label for="dob">Password (DOB DDMMYYYY)</label>
+      <input type="password" id="dob" placeholder="e.g. 1911200x" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- MENU -->
+    <div id="menu" class="hidden">
+      <h2>What do you want to add?</h2>
+      <button type="button" onclick="showForm('memory')">Add Memory</button>
+      <button type="button" onclick="showForm('quote')">Add Quote/Vibe</button>
+    </div>
+
+    <!-- MEMORY FORM -->
+    <form id="memoryForm" class="hidden">
+      <h2>Add a Memory</h2>
+      <label for="memoryTitle">Memory Title</label>
+      <input type="text" id="memoryTitle" required />
+
+      <label for="memoryDesc">Description (optional)</label>
+      <textarea id="memoryDesc"></textarea>
+
+      <label for="memoryURL">Image/Media URL</label>
+      <input type="url" id="memoryURL" required />
+
+      <button type="button" onclick="submitMemory()">Submit Memory</button>
+    </form>
+
+    <!-- QUOTE FORM -->
+    <form id="quoteForm" class="hidden">
+      <h2>Add a Quote / Vibe</h2>
+      <label for="quoteContent">Your Quote / Message</label>
+      <textarea id="quoteContent" required></textarea>
+
+      <button type="button" onclick="submitQuote()">Submit Quote/Vibe</button>
+    </form>
+
+    <!-- OUTPUT PREVIEW -->
+    <div id="preview" class="preview hidden">
+      <p id="previewMessage"></p>
+      <button onclick="returnHome()">← Return to Home</button>
+      <button onclick="addMore()">➕ Add More</button>
+    </div>
+  </div>
+
+  <!-- Supabase UMD & Vanilla JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://rwawxbrigddbuppvykbq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YXd4YnJpZ2RkYnVwcHZ5a2JxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0MjE5MDAsImV4cCI6MjA2ODk5NzkwMH0.ir2cz7VhZjkE2L71CUoukYsXpjB8X1_c02_5kO2ob-w';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const allowedUsers = {
+      "sidhya": "10062008",
+      "jay": "07102008",
+      "naman": "07102009"
+    };
+
+    let currentUser = "";
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nameInput = document.getElementById('name').value.trim().toLowerCase();
+      const dobInput = document.getElementById('dob').value.trim();
+
+      if (allowedUsers[nameInput] === dobInput) {
+        currentUser = nameInput.charAt(0).toUpperCase() + nameInput.slice(1);
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('menu').classList.remove('hidden');
+      } else {
+        alert('Invalid credentials. Try again.');
+      }
+    });
+
+    function showForm(type) {
+      ['memoryForm', 'quoteForm', 'preview'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      if (type === 'memory') {
+        document.getElementById('memoryForm').classList.remove('hidden');
+      } else {
+        document.getElementById('quoteForm').classList.remove('hidden');
+      }
+    }
+
+    async function submitMemory() {
+      const title = document.getElementById('memoryTitle').value.trim();
+      const url = document.getElementById('memoryURL').value.trim();
+      const desc = document.getElementById('memoryDesc').value.trim();
+
+      if (!title || !url) {
+        alert("Please fill in title and URL.");
+        return;
+      }
+
+      const { error } = await supabase.from('moments').insert([
+        { title: title, media_url: url }
+      ]);
+
+      const preview = document.getElementById('preview');
+      const msg = document.getElementById('previewMessage');
+      if (error) {
+        msg.textContent = `❌ Error: ${error.message}`;
+      } else {
+        msg.textContent = `✅ Memory added by ${currentUser}: "${title}"`;
+      }
+      preview.classList.remove('hidden');
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById('memoryForm').classList.add('hidden');
+    }
+
+    async function submitQuote() {
+      const content = document.getElementById('quoteContent').value.trim();
+      if (!content) {
+        alert("Quote cannot be empty.");
+        return;
+      }
+
+      const { error } = await supabase.from('quotes').insert([
+        { content: content, author: currentUser }
+      ]);
+
+      const preview = document.getElementById('preview');
+      const msg = document.getElementById('previewMessage');
+      if (error) {
+        msg.textContent = `❌ Error: ${error.message}`;
+      } else {
+        msg.textContent = `✅ Quote added by ${currentUser}: "${content}"`;
+      }
+      preview.classList.remove('hidden');
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById('quoteForm').classList.add('hidden');
+    }
+
+    function returnHome() {
+      window.location.href = 'home.html';
+    }
+
+    function addMore() {
+      document.getElementById('preview').classList.add('hidden');
+      document.getElementById('memoryForm').reset();
+      document.getElementById('quoteForm').reset();
+      document.getElementById('memoryForm').classList.add('hidden');
+      document.getElementById('quoteForm').classList.add('hidden');
+      document.getElementById('menu').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
+
