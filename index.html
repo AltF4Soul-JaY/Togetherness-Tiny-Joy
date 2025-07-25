@@ -4,11 +4,94 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Togetherness & Tiny Joys – Intro</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="icon" href="T&TJ.ico" type="image/x-icon" />
+
+
+  <style>
+    /* Reset & layout */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Poppins', sans-serif; }
+    .full-screen { position: relative; width: 100%; height: 100vh; }
+
+    /* Logo Header */
+    .site-header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 20;
+    }
+    .site-logo {
+      width: 100px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Landing Style */
+    #landing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fcd5ce;
+      z-index: 10;
+    }
+    .landing-content {
+      text-align: center;
+      z-index: 15;
+    }
+    .landing-content h1 {
+      font-size: 2.5rem;
+      color: #6d6875;
+      margin-bottom: 1rem;
+    }
+    #startBtn {
+      padding: 0.75em 2em;
+      font-size: 1.2rem;
+      color: #fff;
+      background: #ffb5a7;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #startBtn:hover { background: #f28482; }
+
+    /* Video Section */
+    #videoSection { background: #000; display: none; }
+    .video-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .btn-enter-home {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.75em 2em;
+      font-size: 1.1rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+      border-radius: 8px;
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .btn-enter-home.visible { opacity: 1; }
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
 
-  <!-- LANDING -->
+  <!-- 🌟 Logo (top left corner) -->
+  <header class="site-header">
+    <img src="T&TJ.ico" alt="Togetherness & Tiny Joys Logo" class="site-logo" />
+  </header>
+
+  <!-- 💫 Landing Page -->
   <section id="landing" class="full-screen">
     <div class="landing-content">
       <h1>Enter the world of<br/>Togetherness &amp; Tiny Joys</h1>
@@ -16,15 +99,49 @@
     </div>
   </section>
 
-  <!-- VIDEO TRAILER -->
-  <section id="videoSection" class="full-screen hidden">
+  <!-- 🎬 Video Trailer -->
+  <section id="videoSection" class="full-screen">
     <video id="introVideo" class="video-bg">
-      <source src="Intro.mp4" type="video/mp4"/>
+      <source src="Intro.mp4" type="video/mp4" />
       Your browser doesn’t support video.
     </video>
     <a href="home.html" id="enterHomeBtn" class="btn-enter-home hidden">Enter Home</a>
   </section>
 
-  <script src="main.js"></script>
+  <script>
+    const startBtn     = document.getElementById('startBtn');
+    const landing      = document.getElementById('landing');
+    const videoSection = document.getElementById('videoSection');
+    const introVideo   = document.getElementById('introVideo');
+    const enterHomeBtn = document.getElementById('enterHomeBtn');
+
+    let hasLooped = false;
+
+    startBtn.addEventListener('click', () => {
+      // Hide landing, show video
+      landing.style.display = 'none';
+      videoSection.style.display = 'block';
+
+      // Play video
+      introVideo.play().catch(console.error);
+
+      // Watch for 7s, then loop + reveal "Enter Home"
+      introVideo.addEventListener('timeupdate', onTimeUpdate);
+    });
+
+    function onTimeUpdate() {
+      if (!hasLooped && introVideo.currentTime >= 7) {
+        hasLooped = true;
+
+        // Loop from start
+        introVideo.currentTime = 0;
+        introVideo.play().catch(console.error);
+
+        // Show the button
+        enterHomeBtn.classList.remove('hidden');
+        enterHomeBtn.classList.add('visible');
+      }
+    }
+  </script>
 </body>
 </html>
