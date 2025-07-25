@@ -3,34 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Togetherness & Tiny Joys – Home</title>
+  <title>Togetherness &amp; Tiny Joys – Home</title>
   <style>
-    /* Reset & Base */
+    /* RESET & BASE */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html, body { width:100%; height:100%; font-family:'Poppins',sans-serif; scroll-behavior:smooth; }
+    html, body { width:100%; height:100%; font-family:'Poppins',sans-serif; scroll-behavior:smooth; background:#fafafa; }
     a { text-decoration:none; color:inherit; }
     ul { list-style:none; }
+
+    /* CONTAINER & SECTIONS */
     .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
-    .section { padding:4rem 0; }
+    section { padding:4rem 0; }
 
     /* NAVBAR */
     header {
       background:#a2d2ff; position:sticky; top:0; z-index:10;
       box-shadow:0 2px 8px rgba(0,0,0,0.1);
     }
-    .nav { display:flex; justify-content:space-between; align-items:center; }
+    .nav { display:flex; justify-content:space-between; align-items:center; height:4rem; }
     .logo { font-size:1.5rem; font-weight:bold; color:#6d6875; }
     nav ul { display:flex; gap:2rem; }
-    nav a { font-weight:500; color:#6d6875; position:relative; }
+    nav a { position:relative; font-weight:500; color:#6d6875; padding:0.5rem 0; }
     nav a:hover::after {
-      content:''; position:absolute; left:0; bottom:-4px; width:100%; height:2px;
+      content:''; position:absolute; left:0; bottom:0; width:100%; height:2px;
       background:#ff758f; border-radius:2px;
     }
 
     /* HERO */
     #hero { background:linear-gradient(135deg,#ffb5a7,#caf0f8); text-align:center; color:#6d6875; }
     #hero h1 { font-size:2.8rem; margin-bottom:1rem; line-height:1.2; }
-    #hero p { font-size:1.2rem; margin-bottom:2rem; max-width:600px; margin:0 auto; opacity:0.9; }
+    #hero p { font-size:1.2rem; margin-bottom:2rem; max-width:600px; margin-left:auto; margin-right:auto; opacity:.9; }
     #hero .btn { display:inline-block; padding:.75em 2em; background:#ffb5a7; color:#fff; border-radius:30px; font-weight:bold; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:background .3s; }
     #hero .btn:hover { background:#f28482; }
 
@@ -47,7 +49,7 @@
     #quotes h2 { text-align:center; font-size:2rem; margin-bottom:2rem; }
     .quotes-list { max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:1.5rem; }
     .quotes-list li { background:#fff; padding:1rem 1.5rem; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); position:relative; font-style:italic; }
-    .quotes-list li::after { content:attr(data-author); position:absolute; right:1rem; bottom:.75rem; font-style:normal; opacity:0.7; }
+    .quotes-list li::after { content:attr(data-author); position:absolute; right:1rem; bottom:.75rem; font-style:normal; opacity:.7; }
 
     /* ABOUT */
     #about { background:#ffb5a7; color:#fff; }
@@ -57,7 +59,8 @@
     /* FOOTER */
     footer { text-align:center; padding:1.5rem 0; background:#6d6875; color:#fff; font-size:.9rem; }
 
-    @media(max-width:768px){
+    /* RESPONSIVE */
+    @media(max-width:768px) {
       #hero h1 { font-size:2.2rem; }
       nav ul { gap:1rem; }
     }
@@ -81,7 +84,7 @@
   </header>
 
   <!-- HERO -->
-  <section id="hero" class="section">
+  <section id="hero">
     <div class="container">
       <h1>Welcome to Tiny Joys</h1>
       <p>Dive into a world of pastel pals, sweet moments, and heartwarming memories.</p>
@@ -90,7 +93,7 @@
   </section>
 
   <!-- MOMENTS -->
-  <section id="moments" class="section">
+  <section id="moments">
     <div class="container">
       <h2>Moments</h2>
       <div class="moments-grid" id="momentsContainer">
@@ -100,9 +103,9 @@
   </section>
 
   <!-- QUOTES -->
-  <section id="quotes" class="section">
+  <section id="quotes">
     <div class="container">
-      <h2>Quotes & Vibes</h2>
+      <h2>Quotes &amp; Vibes</h2>
       <ul class="quotes-list" id="quotesList">
         <!-- JS will inject quotes here -->
       </ul>
@@ -110,59 +113,56 @@
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="section">
+  <section id="about">
     <div class="container">
       <h2>About This Page</h2>
-      <p><strong>Togetherness & Tiny Joys</strong> is a digital tribute to friendship—where every GIF, every quote, every pastel hue is a reminder of the small delights that make life sweet. Built with ❤️ and pure HTML/CSS/JS, this mini‑site is a space to share smiles, memories, and the warmth of camaraderie.</p>
+      <p><strong>Togetherness &amp; Tiny Joys</strong> is a digital tribute to friendship—where every GIF, every quote, every pastel hue is a reminder of the small delights that make life sweet. Built with ❤️ and pure HTML/CSS/JS, this mini‑site is a space to share smiles, memories, and the warmth of camaraderie.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>&copy; 2025 Tiny Joys. All rights reserved.</footer>
 
-  <!-- Supabase Client & Data Fetch -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  <!-- SUPABASE + VANILLA JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"></script>
+  <script>
+    const SUPABASE_URL = 'https://rwawxbrigddbuppvykbq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YXd4YnJpZ2RkYnVwcHZ5a2JxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0MjE5MDAsImV4cCI6MjA2ODk5NzkwMH0.ir2cz7VhZjkE2L71CUoukYsXpjB8X1_c02_5kO2ob-w';
 
-    const SUPABASE_URL = 'https://db.rwawxbrigddbuppvykbq.supabase.co'
-    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE'
+    const { createClient } = supabase;
+    const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
+    // Fetch & render moments
     async function loadMoments() {
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('moments')
         .select('title, media_url')
-        .order('created_at', { ascending: false })
-
-      if (error) return console.error(error)
-      const container = document.getElementById('momentsContainer')
-      container.innerHTML = data.map(m => `
+        .order('created_at', { ascending: false });
+      if (error) return console.error(error);
+      document.getElementById('momentsContainer').innerHTML = data.map(m => `
         <div class="moment-card">
-          <img src="${m.media_url}" alt="${m.title}" />
+          <img src="${m.media_url}" alt="${m.title}">
           <h3>${m.title}</h3>
         </div>
-      `).join('')
+      `).join('');
     }
 
+    // Fetch & render quotes
     async function loadQuotes() {
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('quotes')
         .select('content, author')
-        .order('created_at', { ascending: false })
-
-      if (error) return console.error(error)
-      const list = document.getElementById('quotesList')
-      list.innerHTML = data.map(q => `
+        .order('created_at', { ascending: false });
+      if (error) return console.error(error);
+      document.getElementById('quotesList').innerHTML = data.map(q => `
         <li data-author="– ${q.author}">${q.content}</li>
-      `).join('')
+      `).join('');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      loadMoments()
-      loadQuotes()
-    })
+      loadMoments();
+      loadQuotes();
+    });
   </script>
 </body>
 </html>
-
