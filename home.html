@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Togetherness & Tiny Joys – Home</title>
+  <style>
+    /* Reset & Base */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; font-family:'Poppins',sans-serif; scroll-behavior:smooth; }
+    a { text-decoration:none; color:inherit; }
+    ul { list-style:none; }
+    .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
+    .section { padding:4rem 0; }
+
+    /* NAVBAR */
+    header {
+      background:#a2d2ff; position:sticky; top:0; z-index:10;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { font-size:1.5rem; font-weight:bold; color:#6d6875; }
+    nav ul { display:flex; gap:2rem; }
+    nav a { font-weight:500; color:#6d6875; position:relative; }
+    nav a:hover::after {
+      content:''; position:absolute; left:0; bottom:-4px; width:100%; height:2px;
+      background:#ff758f; border-radius:2px;
+    }
+
+    /* HERO */
+    #hero { background:linear-gradient(135deg,#ffb5a7,#caf0f8); text-align:center; color:#6d6875; }
+    #hero h1 { font-size:2.8rem; margin-bottom:1rem; line-height:1.2; }
+    #hero p { font-size:1.2rem; margin-bottom:2rem; max-width:600px; margin:0 auto; opacity:0.9; }
+    #hero .btn { display:inline-block; padding:.75em 2em; background:#ffb5a7; color:#fff; border-radius:30px; font-weight:bold; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:background .3s; }
+    #hero .btn:hover { background:#f28482; }
+
+    /* MOMENTS */
+    #moments { background:#fcd5ce; }
+    #moments h2 { text-align:center; font-size:2rem; color:#6d6875; margin-bottom:2rem; }
+    .moments-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; }
+    .moment-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1); text-align:center; }
+    .moment-card img { width:100%; display:block; }
+    .moment-card h3 { padding:.5rem; font-size:1rem; color:#6d6875; }
+
+    /* QUOTES */
+    #quotes { background:#a2d2ff; color:#6d6875; }
+    #quotes h2 { text-align:center; font-size:2rem; margin-bottom:2rem; }
+    .quotes-list { max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:1.5rem; }
+    .quotes-list li { background:#fff; padding:1rem 1.5rem; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); position:relative; font-style:italic; }
+    .quotes-list li::after { content:attr(data-author); position:absolute; right:1rem; bottom:.75rem; font-style:normal; opacity:0.7; }
+
+    /* ABOUT */
+    #about { background:#ffb5a7; color:#fff; }
+    #about h2 { text-align:center; font-size:2rem; margin-bottom:1rem; }
+    #about p { max-width:700px; margin:0 auto; font-size:1.1rem; line-height:1.6; }
+
+    /* FOOTER */
+    footer { text-align:center; padding:1.5rem 0; background:#6d6875; color:#fff; font-size:.9rem; }
+
+    @media(max-width:768px){
+      #hero h1 { font-size:2.2rem; }
+      nav ul { gap:1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="container nav">
+      <div class="logo">Tiny Joys</div>
+      <nav>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#moments">Moments</a></li>
+          <li><a href="#quotes">Quotes</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero" class="section">
+    <div class="container">
+      <h1>Welcome to Tiny Joys</h1>
+      <p>Dive into a world of pastel pals, sweet moments, and heartwarming memories.</p>
+      <a href="#moments" class="btn">See Moments</a>
+    </div>
+  </section>
+
+  <!-- MOMENTS -->
+  <section id="moments" class="section">
+    <div class="container">
+      <h2>Moments</h2>
+      <div class="moments-grid" id="momentsContainer">
+        <!-- JS will inject moment cards here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTES -->
+  <section id="quotes" class="section">
+    <div class="container">
+      <h2>Quotes & Vibes</h2>
+      <ul class="quotes-list" id="quotesList">
+        <!-- JS will inject quotes here -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>About This Page</h2>
+      <p><strong>Togetherness & Tiny Joys</strong> is a digital tribute to friendship—where every GIF, every quote, every pastel hue is a reminder of the small delights that make life sweet. Built with ❤️ and pure HTML/CSS/JS, this mini‑site is a space to share smiles, memories, and the warmth of camaraderie.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>&copy; 2025 Tiny Joys. All rights reserved.</footer>
+
+  <!-- Supabase Client & Data Fetch -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const SUPABASE_URL = 'https://db.rwawxbrigddbuppvykbq.supabase.co'
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE'
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    async function loadMoments() {
+      const { data, error } = await supabase
+        .from('moments')
+        .select('title, media_url')
+        .order('created_at', { ascending: false })
+
+      if (error) return console.error(error)
+      const container = document.getElementById('momentsContainer')
+      container.innerHTML = data.map(m => `
+        <div class="moment-card">
+          <img src="${m.media_url}" alt="${m.title}" />
+          <h3>${m.title}</h3>
+        </div>
+      `).join('')
+    }
+
+    async function loadQuotes() {
+      const { data, error } = await supabase
+        .from('quotes')
+        .select('content, author')
+        .order('created_at', { ascending: false })
+
+      if (error) return console.error(error)
+      const list = document.getElementById('quotesList')
+      list.innerHTML = data.map(q => `
+        <li data-author="– ${q.author}">${q.content}</li>
+      `).join('')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMoments()
+      loadQuotes()
+    })
+  </script>
+</body>
+</html>
+
